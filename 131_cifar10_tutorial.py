@@ -176,10 +176,12 @@ with torch.no_grad():
         outputs = net(images)
         max, predicted = torch.max(outputs, 1)
         c = (predicted == labels).squeeze()
+        #实际运行时使用下面的for循环会快很多，保留只是为了验证结果的正确性
         for i in range(labels.size(0)):
             label = labels[i]
             class_correct[label] += c[i].item()
             class_total[label] += 1
+        #实际运行时使用下面的for循环会快很多，保留只是为了验证结果的正确性
         for cls in range(10):
             class_correct2[cls]+=c[labels==cls].sum().item()
 print('class_total',class_total)
