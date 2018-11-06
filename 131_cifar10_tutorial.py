@@ -169,6 +169,7 @@ print('Accuracy of the network on the 10000 test images: %d %%' % (
 class_correct = list(0. for i in range(10))
 class_correct2 = list(0. for i in range(10))
 class_total = list(0. for i in range(10))
+class_total2 = list(0. for i in range(10))
 with torch.no_grad():
     for data in testloader:
         images, labels = data
@@ -176,15 +177,17 @@ with torch.no_grad():
         outputs = net(images)
         max, predicted = torch.max(outputs, 1)
         c = (predicted == labels).squeeze()
-        #实际运行时使用下面的for循环会快很多，保留只是为了验证结果的正确性
+        # 实际运行时使用下面的for循环会快很多，保留只是为了验证结果的正确性
         for i in range(labels.size(0)):
             label = labels[i]
             class_correct[label] += c[i].item()
             class_total[label] += 1
-        #实际运行时使用下面的for循环会快很多，保留只是为了验证结果的正确性
+        # 实际运行时使用下面的for循环会快很多，保留只是为了验证结果的正确性
         for cls in range(10):
             class_correct2[cls]+=c[labels==cls].sum().item()
+            class_total2[cls] += [labels == cls][0].sum().item()
 print('class_total',class_total)
+print('class_total2',class_total2)
 print('class_correct',class_correct)
 print('class_correct2',class_correct2)
 
