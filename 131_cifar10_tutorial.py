@@ -10,11 +10,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 torch.set_printoptions(linewidth=200)
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-print("device:", device)
 transform=transforms.Compose([transforms.ToTensor(),transforms.Normalize((0.5,0.5,0.5),(0.5,0.5,0.5))])
 
-bs=256
+bs=512
 num_workers=2
 lr=0.001
 mm=0.9
@@ -69,11 +67,9 @@ class Net(nn.Module):
         self.fc1=nn.Linear(16*5*5,120)
         self.fc2=nn.Linear(120,84)
         self.fc3=nn.Linear(84,num_cls)
-
-
-
-
     def forward(self, x):
+        print("\tIn Model: input size", x.size())
+
         # print("inputs.shape=",x.shape)
         # x=self.conv1(x)
         # print("self.conv1(x).shape=",x.shape)
@@ -99,12 +95,19 @@ class Net(nn.Module):
         # print("F.relu2(x.view) shape=", x.shape)
         x=self.fc3(x)
         # print("fc3(x.view) shape=", x.shape)
+        print("\tIn Model: output size", x.size())
         return x
 
-
-
+# 多GPU数据并行处理
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")  #这行是需要的
+print("device:", device)
 net=Net()
+if torch.cuda.device_count() > 1:
+  print("Let's use", torch.cuda.device_count(), "GPUs!")
+  # dim = 0 [30, xxx] -> [10, ...], [10, ...], [10, ...] on 3 GPUs
+  net = nn.DataParallel(net)
 net.to(device)
+# 多GPU数据并行处理
 
 # Define a Loss Function and optimizer
 import torch.optim as optim
@@ -112,7 +115,6 @@ criterion=nn.CrossEntropyLoss()
 optimizer=optim.SGD(net.parameters(),lr=lr,momentum=mm)
 
 for epoch in range(epochs):
-
     running_loss=0.0
     print("----------in training enumerate-----------------")
 
@@ -122,6 +124,7 @@ for epoch in range(epochs):
         optimizer.zero_grad() # zero the parameter gradients
         # forward + backward + optimize
         outputs=net(inputs)
+        print("Outside: input size", inputs.size(),"output_size", outputs.size())
         loss=criterion(outputs, labels)
         loss.backward()
         optimizer.step()
