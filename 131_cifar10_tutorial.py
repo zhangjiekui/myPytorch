@@ -18,7 +18,7 @@ bs=256
 num_workers=2
 lr=0.001
 mm=0.9
-epochs=1
+epochs=10
 
 trainset=torchvision.datasets.CIFAR10(root="./data",train=True, transform=transform,download=True)
 # train_data :(50000, 32, 32, 3)   train_labels: 50000
@@ -29,6 +29,7 @@ testset=torchvision.datasets.CIFAR10(root="./data",train=False,download=True,tra
 testloader=torch.utils.data.DataLoader(testset,batch_size=bs,shuffle=False,num_workers=num_workers)
 
 classes = ('plane', 'car', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
+num_cls=len(classes)
 
 
 def imshow(img,prefix):
@@ -48,6 +49,11 @@ print(classes[labels.data[0]])
 
 imshow(torchvision.utils.make_grid(imgs),'train')
 print(" ".join("%5s" % classes[labels[j]] for j in range(bs)))
+# str = "-"
+# seq = ("a", "b", "c") # 字符串序列
+# print(str.join( seq ))
+# result: a-b-c
+
 plt.show()
 
 # Define a Convolution Neural Network
@@ -62,7 +68,7 @@ class Net(nn.Module):
         self.conv2=nn.Conv2d(6,16,(5,5))
         self.fc1=nn.Linear(16*5*5,120)
         self.fc2=nn.Linear(120,84)
-        self.fc3=nn.Linear(84,10)
+        self.fc3=nn.Linear(84,num_cls)
 
 
 
@@ -127,7 +133,7 @@ for epoch in range(epochs):
 
         # print statistics
         running_loss += loss.item()
-        if i % 20==19: # print every 2000 mini-batches
+        if i % 20==19: # print every 20 mini-batches
             print('[epoch %d, batch %5d]——loss: %.3f' % (epoch+1,i+1 ,running_loss/20))
             running_loss=0.0
 print("----------in training enumerate-----------------")
@@ -166,10 +172,10 @@ with torch.no_grad():
 print('Accuracy of the network on the 10000 test images: %d %%' % (
     100 * correct / total))
 
-class_correct = list(0. for i in range(10))
-class_correct2 = list(0. for i in range(10))
-class_total = list(0. for i in range(10))
-class_total2 = list(0. for i in range(10))
+class_correct = list(0. for i in range(num_cls))
+class_correct2 = list(0. for i in range(num_cls))
+class_total = list(0. for i in range(num_cls))
+class_total2 = list(0. for i in range(num_cls))
 with torch.no_grad():
     for data in testloader:
         images, labels = data
@@ -183,7 +189,7 @@ with torch.no_grad():
             class_correct[label] += c[i].item()
             class_total[label] += 1
         # 实际运行时使用下面的for循环会快很多，保留只是为了验证结果的正确性
-        for cls in range(10):
+        for cls in range(num_cls):
             class_correct2[cls]+=c[labels==cls].sum().item()
             class_total2[cls] += [labels == cls][0].sum().item()
 print('class_total',class_total)
@@ -191,6 +197,6 @@ print('class_total2',class_total2)
 print('class_correct',class_correct)
 print('class_correct2',class_correct2)
 
-for i in range(10):
+for i in range(num_cls):
     print('Accuracy of %5s : %2d %%' % (
         classes[i], 100 * class_correct[i] / class_total[i]))
