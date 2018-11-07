@@ -12,6 +12,8 @@ import matplotlib.pyplot as plt
 torch.set_printoptions(linewidth=200)
 transform=transforms.Compose([transforms.ToTensor(),transforms.Normalize((0.5,0.5,0.5),(0.5,0.5,0.5))])
 
+# https://pytorch.org/tutorials/beginner/saving_loading_models.html  #todo
+
 bs=512
 num_workers=2
 lr=0.001
