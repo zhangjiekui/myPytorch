@@ -1,6 +1,13 @@
 # -*- coding: utf-8 -*-
 # Author: Zhangjiekui
 # Date: 2018-11-5 11:37
+
+'''
+https://pytorch.org/tutorials/beginner/blitz/data_parallel_tutorial.html
+https://pytorch.org/tutorials/beginner/pytorch_with_examples.html#examples-download
+https://pytorch.org/tutorials/beginner/saving_loading_models.html
+'''
+
 from __future__ import print_function
 import torch
 import torchvision
@@ -12,13 +19,11 @@ import matplotlib.pyplot as plt
 torch.set_printoptions(linewidth=200)
 transform=transforms.Compose([transforms.ToTensor(),transforms.Normalize((0.5,0.5,0.5),(0.5,0.5,0.5))])
 
-# https://pytorch.org/tutorials/beginner/saving_loading_models.html  #todo
-
 bs=512
 num_workers=2
 lr=0.001
 mm=0.9
-epochs=10
+epochs=1
 
 trainset=torchvision.datasets.CIFAR10(root="./data",train=True, transform=transform,download=True)
 # train_data :(50000, 32, 32, 3)   train_labels: 50000
@@ -101,7 +106,7 @@ class Net(nn.Module):
         return x
 
 # 多GPU数据并行处理
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")  #这行是需要的
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 print("device:", device)
 net=Net()
 if torch.cuda.device_count() > 1:
@@ -132,12 +137,8 @@ for epoch in range(epochs):
         optimizer.step()
 
         print('epoch=',epoch+1,' i=',i+1,' loss=',loss.item(),' inputs.shape=', inputs.shape,' labels.shape=', labels.shape,' trained imgs=',(i+1)*bs )
-
-
-
-
         # print statistics
-        running_loss += loss.item()
+        running_loss += loss.item()  #todo 必须加item(),否则会保存梯度结果，导致额外内存开销
         if i % 20==19: # print every 20 mini-batches
             print('[epoch %d, batch %5d]——loss: %.3f' % (epoch+1,i+1 ,running_loss/20))
             running_loss=0.0
@@ -148,9 +149,16 @@ print('Finished Training')
 print('-------------------预测咯--------------------------------------')
 dataiter=iter(testloader)
 testimgs,testlabels=dataiter.next()
+
+
+print("$$$$$$$$$$$$$$ volatile=True:")
+# todo volatile=True 表述前向传播时不需要保留缓存，对于测试集，不需要做反向传播，可以在前向传播时释放掉内存，节约内存空间
+# todo volatile在0.4版本及之后已经被弃用了，现在使用with torch.no_grad()，见下面的代码
+testimgs,testlabels=torch.autograd.Variable(testimgs,volatile=True), torch.autograd.Variable(testlabels,volatile=True)
 imshow(torchvision.utils.make_grid(testimgs),'test')
 print('T: '," ".join("%5s" % classes[testlabels[j]] for j in range(bs)))
 testimgs,testlabels=testimgs.to(device),testlabels.to(device)
+net.eval() #Remember that you must call model.eval() to set dropout and batch normalization layers to evaluation mode before running inference. Failing to do this will yield inconsistent inference results.
 outputs=net(testimgs)
 print("predict outputs.shape=",outputs.shape)
 max, predicted = torch.max(outputs, 1)
@@ -162,6 +170,27 @@ print("max",max[0:10])
 print("predicted",predicted[0:10])
 p=[predicted[j] for j in range(10)]
 print(p)
+
+
+print("$$$$$$$$$$$$$$with torch.no_grad():")
+with torch.no_grad():
+    imshow(torchvision.utils.make_grid(testimgs.cpu()), 'test')
+    print('T: ', " ".join("%5s" % classes[testlabels[j]] for j in range(bs)))
+    testimgs, testlabels = testimgs.to(device), testlabels.to(device)
+    net.eval()  # Remember that you must call model.eval() to set dropout and batch normalization layers to evaluation mode before running inference. Failing to do this will yield inconsistent inference results.
+    outputs = net(testimgs)
+    print("predict outputs.shape=", outputs.shape)
+    max, predicted = torch.max(outputs, 1)
+    print('P: ', ' '.join('%5s' % classes[predicted[j]]
+                          for j in range(bs)))
+
+    print("outputs", outputs[0:10][:].data)
+    print("max", max[0:10])
+    print("predicted", predicted[0:10])
+    p = [predicted[j] for j in range(10)]
+    print(p)
+
+print("$$$$$$$$$$$$$$with torch.no_grad():")
 
 correct = 0
 total = 0
