@@ -149,7 +149,8 @@ def train():
     print("----------in training enumerate-----------------")
     print('Finished Training')
     torch.save(net.state_dict(), 'netState_dict.pth')
-    torch.save(net.module.state_dict(),  'netState_dict_withoutModule.pth')
+    print('netState_dict.pth saved!')
+
     '''
     When saving the model using nn.DataParallel, 
     which stores the model in module, and then I was trying to load it without DataParallel.
@@ -164,7 +165,8 @@ def train():
     torch.save(model.state_dict(), path_to_file)
     that way you don’t get the “module.” string to begin with…
     '''
-    print('netState_dict.pth saved!')
+    torch.save(net.module.state_dict(), 'netState_dict_withoutModule.pth')
+    print('netState_dict_withoutModule.pth saved!')
     torch.save(net, 'net.pth')
     print('net.pth saved!')
 
