@@ -7,8 +7,8 @@
 saved model in cifar10_tutorial131.py, 
 load and predict in cifar10_tutorial131_predict.py,  cifar10_tutorial131_predict2.py
 
-
-   '''
+    ------------------------
+    '''
     When saving the model using nn.DataParallel, 
     which stores the model in module, and then I was trying to load it without DataParallel.
     So, either I need to add a nn.DataParallel temporarily in my network for loading purposes,
@@ -29,12 +29,12 @@ torch.save(net.module.state_dict(),  'netState_dict_withoutModule.pth') --
 
 torch.save(net.state_dict(), 'netState_dict.pth')  --
 state_dict=torch.load(Path_dictstate)
-# create new OrderedDict that does not contain `module.`
+    '''create new OrderedDict that does not contain `module.`'''
 from collections import OrderedDict
 new_state_dict = OrderedDict()
 for k, v in state_dict.items():
     name = k[7:] # remove `module.`
     new_state_dict[name] = v
-# load params
+    '''load params'''
 
 model_dictstate.load_state_dict(new_state_dict)
