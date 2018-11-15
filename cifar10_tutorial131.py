@@ -109,6 +109,10 @@ class Net(nn.Module):
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 print("device:", device)
 net=Net()
+for param in net.state_dict():
+    print("********刚初始化的Model：", param, '\t', net.state_dict()[param].size())
+
+
 if torch.cuda.device_count() > 1:
   print("Let's use", torch.cuda.device_count(), "GPUs!")
   # dim = 0 [30, xxx] -> [10, ...], [10, ...], [10, ...] on 3 GPUs
@@ -120,6 +124,9 @@ net.to(device)
 import torch.optim as optim
 criterion=nn.CrossEntropyLoss()
 optimizer=optim.SGD(net.parameters(),lr=lr,momentum=mm)
+
+for var_name in optimizer.state_dict():
+    print("******in optimizer:", var_name ,'\t', optimizer.state_dict()[var_name])
 
 
 def train():
@@ -169,6 +176,8 @@ def train():
     print('netState_dict_withoutModule.pth saved!')
     torch.save(net, 'net.pth')
     print('net.pth saved!')
+    for param in net.state_dict():
+        print("********保存后的Model：", param, '\t', net.state_dict()[param].size())
 
 
 
