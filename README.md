@@ -4,7 +4,7 @@
 # todo https://github.com/zhangjiekui/Pytorch-Project-Template
 # todo https://pytorch.org/tutorials/beginner/saving_loading_models.html  
 
-saved model in cifar10_tutorial131.py
+saved model in cifar10_tutorial131.py, 
 load and predict in cifar10_tutorial131_predict.py,  cifar10_tutorial131_predict2.py
 
 
