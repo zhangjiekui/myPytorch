@@ -29,12 +29,14 @@ torch.save(net.module.state_dict(),  'netState_dict_withoutModule.pth') --
 
 torch.save(net.state_dict(), 'netState_dict.pth')  --
 state_dict=torch.load(Path_dictstate)
+    ------------------------
     '''create new OrderedDict that does not contain `module.`'''
 from collections import OrderedDict
 new_state_dict = OrderedDict()
 for k, v in state_dict.items():
     name = k[7:] # remove `module.`
     new_state_dict[name] = v
+        ------------------------
     '''load params'''
 
 model_dictstate.load_state_dict(new_state_dict)
