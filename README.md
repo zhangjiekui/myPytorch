@@ -3,7 +3,8 @@
 
 
 # todo https://pytorch.org/tutorials/beginner/saving_loading_models.html 
-# todo SAVING & LOADING A GENERAL CHECKPOINT FOR INFERENCE AND/OR RESUMING TRAINING
+# todo 
+       SAVING & LOADING A GENERAL CHECKPOINT FOR INFERENCE AND/OR RESUMING TRAINING
 
 saved model in cifar10_tutorial131.py, 
 load and predict in cifar10_tutorial131_predict.py,  cifar10_tutorial131_predict2.py
