@@ -27,13 +27,17 @@ print("Torchvision Version: ",torchvision.__version__)
 err_savemode_msg="错误：目前只支持['state_dict','entire']两种模型存储模式！"
 err_none_model_msg="错误：必须提供模型类实例！"
 
-def using_multiGPUs(model):
+def get_device():
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    return device
+
+def using_multiGPUs(model):
     num_GPU=torch.cuda.device_count()
     if num_GPU > 1:
-      print("Using", num_GPU, "GPUs!")
       model = nn.DataParallel(model)
+    device = get_device()
     model.to(device)
+    print("Using ", num_GPU, " GPUs!")
     return model, num_GPU
 
 def save_model(model,saveMode='state_dict', num_GPU=2, savePathName='netState_dict_withoutModule.pth'):
