@@ -41,7 +41,7 @@ batch_size = 64
 
 num_workers=4
 # Number of epochs to train for
-num_epochs = 25
+num_epochs = 2
 # Flag for feature extracting. When False, we finetune the whole model,
 #   when True we only update the reshaped layer params
 feature_extract = True
@@ -278,9 +278,9 @@ title=model_name + " Validation Accuracy vs. Number of Training Epochs:"
 plt.title(title)
 plt.xlabel("Training Epochs")
 plt.ylabel("Validation Accuracy")
-plt.plot(range(1,num_epochs+1),ohist,label="Pretrained")
-plt.plot(range(1,num_epochs+1),shist,label="Scratch")
-plt.plot(range(1,num_epochs+1),phist,label="scratch_pretrained")
+plt.plot(range(1,num_epochs+1),ohist,label="Pretrained: "+str(max(ohist)))
+plt.plot(range(1,num_epochs+1),shist,label="Scratch: "+str(max(shist)))
+plt.plot(range(1,num_epochs+1),phist,label="scratch_pretrained :"+str(max(phist)))
 plt.ylim((0,1.))
 plt.xticks(np.arange(1, num_epochs+1, 1.0))
 plt.legend()
