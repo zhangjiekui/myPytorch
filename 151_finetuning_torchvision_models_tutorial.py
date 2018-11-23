@@ -284,6 +284,8 @@ plt.plot(range(1,num_epochs+1),phist,label="scratch_pretrained :"+str(max(phist)
 plt.ylim((0,1.))
 plt.xticks(np.arange(1, num_epochs+1, 1.0))
 plt.legend()
+filename=model_name+"_result.jpg"
+plt.savefig(filename)
 plt.show()
 
 # 0.928105 0.915033
