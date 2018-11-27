@@ -3,6 +3,8 @@
 
 
 # todo https://pytorch.org/tutorials/beginner/saving_loading_models.html 
+       Intro to Deep Learning with PyTorch - Udacity   https://classroom.udacity.com/courses/ud188/lessons/b4ca7aaa-b346-43b1-ae7d-20d27b2eab65/concepts/501ce6c5-9b80-4536-8754-f7da607fc40d  
+       Neural Network Programming - Deep Learning with PyTorch  http://deeplizard.com/learn/video/k4jY9L8H89U
 # todo 
        SAVING & LOADING A GENERAL CHECKPOINT FOR INFERENCE AND/OR RESUMING TRAINING
 
