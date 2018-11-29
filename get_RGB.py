@@ -155,9 +155,9 @@ def get_color(frame,color_dict,kernel_size=5,iterations=2):
     # color_dict = getColorList()
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     for d in color_dict:
-        mask = cv2.inRange(hsv, color_dict[d][0], color_dict[d][1])
-        cv2.imwrite('color_'+d + '.jpg', mask)
-        mask = cv2.threshold(mask, 127, 255, cv2.THRESH_BINARY)[1]
+        mask_o = cv2.inRange(hsv, color_dict[d][0], color_dict[d][1])
+        cv2.imwrite('color_'+d + '.jpg', mask_o)
+        mask = cv2.threshold(mask_o, 127, 255, cv2.THRESH_BINARY)[1]
         binary = cv2.dilate(mask, kernel, iterations=iterations)
         cv2.imwrite('color_' + d + '_dlt.jpg', binary)
         img, cnts, hiera = cv2.findContours(binary.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
@@ -166,10 +166,17 @@ def get_color(frame,color_dict,kernel_size=5,iterations=2):
         # print('num_contours[0]:', cnts[0])
         # print("hiera:",hiera)
         if d=='red2':
-            cv2.imwrite('img_returnedby_findContours.jpg', img)
-            cv2.imwrite('dilate_binary.jpg', binary)
-            cv2.drawContours(frame, cnts, -1, (222, 222, 222), thickness=-1)
-            cv2.imwrite('drawContours.jpg', frame)
+            # gen the image part in 'red2' color
+            index=mask==255
+            white_image=np.zeros(frame.shape, np.uint8)
+            white_image[:,:]=(255,255,255)
+            white_image[index]=frame[index] #(0,0,255)
+            cv2.imwrite('y_white_image.jpg',white_image)
+            # gen the image part in 'red2' color
+            cv2.imwrite('y_img_returnedby_findContours.jpg', img)
+            cv2.imwrite('y_dilate_binary.jpg', binary)
+            cv2.drawContours(frame, cnts, -1, [222, 222, 222], thickness=-1)
+            cv2.imwrite('y_drawContours.jpg', frame)
 
 
 
@@ -212,33 +219,31 @@ if __name__ == '__main__':
     print(get_color(frame,color_dict,kernel_size=3))
     # ern_dlt(frame)
 
-yuantu_p='/dlprojects/chineseocrpytorch0.41/chineseocr/train/data/ocr/test/inv1.png'
-contour_p='/dlprojects/chineseocrpytorch0.41/chineseocr/zjk_testcode/drawContours.jpg'
-yuantu= cv2.imread(yuantu_p)
-contour= cv2.imread(contour_p)
-yuantu2=copy.deepcopy(yuantu)
-diff=yuantu-contour
-cv2.imwrite('diff.jpg',diff)
+
+def gen_newImage():
+    yuantu_p = '/dlprojects/chineseocrpytorch0.41/chineseocr/train/data/ocr/test/inv1.png'
+    contour_p = '/dlprojects/chineseocrpytorch0.41/chineseocr/zjk_testcode/drawContours.jpg'
+    yuantu = cv2.imread(yuantu_p)
+    contour = cv2.imread(contour_p)
+    yuantu2 = copy.deepcopy(yuantu)
+    diff = yuantu - contour
+    cv2.imwrite('diff.jpg', diff)
+    sub = cv2.subtract(contour, yuantu)
+    cv2.imwrite('sub.jpg', sub)
+    sub_back = cv2.subtract(yuantu, yuantu)
+    cv2.imwrite('sub_back1.jpg', sub_back)
+    rows, cols, channels = yuantu.shape  # rows，cols
+    yuantu2 = yuantu.copy()
+    cv2.imwrite('yuantu.jpg', yuantu)
+    for i in range(rows):
+        for j in range(cols):
+            if np.all(contour[i, j] == [222, 222, 222]):  # 0代表黑色的点
+                sub_back[i, j] = yuantu[i, j]  # 此处替换颜色，为BGR通道
+    cv2.imwrite('y_sub_back2.jpg', sub_back)
+    cv2.imwrite('y_yuantu2.jpg', yuantu2)
 
 
-
-
-sub=cv2.subtract(contour,yuantu)
-cv2.imwrite('sub.jpg',sub)
-sub_back=cv2.subtract(yuantu,yuantu)
-cv2.imwrite('sub_back1.jpg',sub_back)
-
-rows, cols, channels = yuantu.shape  # rows，cols
-yuantu2=yuantu.copy()
-cv2.imwrite('yuantu.jpg',yuantu)
-for i in range(rows):
-    for j in range(cols):
-        if np.all(contour[i, j] == [222, 222, 222]):  # 0代表黑色的点
-            sub_back[i, j] = yuantu[i,j]  # 此处替换颜色，为BGR通道
-
-
-cv2.imwrite('sub_back2.jpg',sub_back)
-cv2.imwrite('yuantu2.jpg',yuantu2)
+# gen_newImage() The method code can work, but rubbish
 
 
 '''
