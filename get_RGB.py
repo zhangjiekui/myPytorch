@@ -167,12 +167,19 @@ def get_color(frame,color_dict,kernel_size=5,iterations=2):
         # print("hiera:",hiera)
         if d=='red2':
             # gen the image part in 'red2' color
-            index=mask==255
-            white_image=np.zeros(frame.shape, np.uint8)
-            white_image[:,:]=(255,255,255)
+            white=255
+            index=mask==white #white
+
+            white_image = np.zeros(frame.shape, np.uint8)
+            white_image[:,:]=(white,white,white)
             white_image[index]=frame[index] #(0,0,255)
             cv2.imwrite('y_white_image.jpg',white_image)
+
+            black_image=np.zeros(frame.shape, np.uint8)
+            black_image[index]=frame[index] #(0,0,255)
+            cv2.imwrite('y_black_image.jpg',black_image)
             # gen the image part in 'red2' color
+
             cv2.imwrite('y_img_returnedby_findContours.jpg', img)
             cv2.imwrite('y_dilate_binary.jpg', binary)
             cv2.drawContours(frame, cnts, -1, [222, 222, 222], thickness=-1)
