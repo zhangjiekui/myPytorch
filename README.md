@@ -3,6 +3,14 @@ cd /data/fastaiV1/fastaiClassV3/
 jupyter notebook --no-browser --port=8889
 
 ssh -N -f -L localhost:8889:localhost:8889 zjk@10.1.56.7
+
+or
+
+jupyter notebook --no-browser --port=8896 --allow-root
+
+ssh -N -f -L localhost:8896:localhost:8896 root@192.168.45.48
+
+192.168.45.48
 # myPytorch
 自己学习敲的代码
 
