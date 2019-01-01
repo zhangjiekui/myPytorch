@@ -22,7 +22,7 @@ An activation is the result of either a matrix multiply or an activation functio
 
 Parameters are numbers that are stored, they are used to make a calculation. Activations are the result of a calculation﹣the numbers that are calculated. 
 
-Layers: all of these things that does a calculation, every layer results in a set of activations + 【input layer】+ 【output layer】
+Layers: all of these things that does a calculation, every layer results in a set of activations + 【input layer】+ 【output layer】.
 (results of the activation functions are seemed not to be layers, execpt for output layer)
 
 
