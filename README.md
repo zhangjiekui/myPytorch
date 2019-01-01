@@ -26,7 +26,7 @@ Layers: all of these things that does a calculation, every layer results in a se
 (results of the activation functions are seemed not to be layers, execpt for output layer)
 
 
-Activation function : such as relu, softmax
+Activation function : such as relu, sigmoid
 
 
 
