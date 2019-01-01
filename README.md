@@ -12,7 +12,7 @@ ssh -N -f -L localhost:8896:localhost:8896 root@192.168.45.48
 
 192.168.45.48
 
-#some definitions
+# some definitions
 
 Parameters are the numbers inside the matrices that we multiply by.
 
