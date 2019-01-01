@@ -20,6 +20,8 @@ Parameters: weights & bias
 
 An activation is the result of either a matrix multiply or an activation function.
 
+Parameters are numbers that are stored, they are used to make a calculation. Activations are the result of a calculation﹣the numbers that are calculated. 
+
 A layer is the result of a matrix multiply + 【input layer】+ 【output layer】
 
 Activation function : such as relu, softmax
