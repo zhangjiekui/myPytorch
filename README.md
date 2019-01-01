@@ -16,6 +16,8 @@ ssh -N -f -L localhost:8896:localhost:8896 root@192.168.45.48
 
 Parameters are the numbers inside the matrices that we multiply by.
 
+Parameters: weights & bias
+
 An activation is the result of either a matrix multiply or an activation function.
 
 A layer is the result of a matrix multiply + 【input layer】+ 【output layer】
