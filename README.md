@@ -1,6 +1,6 @@
 jupyter notebook --no-browser --port=8889
 
-ssh -N -f -L localhost:8889:localhost:8889 zjk@192.168.44.3
+ssh -N -f -L localhost:8889:localhost:8889 zjk@10.1.56.7
 # myPytorch
 自己学习敲的代码
 
