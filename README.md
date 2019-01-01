@@ -1,3 +1,5 @@
+cd /data/fastaiV1/fastaiClassV3/
+
 jupyter notebook --no-browser --port=8889
 
 ssh -N -f -L localhost:8889:localhost:8889 zjk@10.1.56.7
