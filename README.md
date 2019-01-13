@@ -30,10 +30,15 @@ Activation function : such as relu, sigmoid
 
 #  S2S Attention Transformer Bert
 Visualizing A Neural Machine Translation Model (Mechanics of Seq2seq Models With Attention)  https://jalammar.github.io/visualizing-neural-machine-translation-mechanics-of-seq2seq-models-with-attention/
+
 The Illustrated Transformer  https://jalammar.github.io/illustrated-transformer/
+
 The Annotated Transformer    http://nlp.seas.harvard.edu/2018/04/03/attention.html
+
 Dissecting BERT Part 1: The Encoder     https://medium.com/dissecting-bert/dissecting-bert-part-1-d3c3d495cdb3
+
 Dissecting BERT Part 2: BERT Specifics  http://mc.ai/dissecting-bert-part-2-bert-specifics/
+
 # myPytorch
 自己学习敲的代码
 
