@@ -37,6 +37,8 @@ The Annotated Transformer    http://nlp.seas.harvard.edu/2018/04/03/attention.ht
 
 Dissecting BERT Part 1: The Encoder     https://medium.com/dissecting-bert/dissecting-bert-part-1-d3c3d495cdb3
 
+Dissecting BERT Appendix: The Decoder   https://medium.com/dissecting-bert/dissecting-bert-appendix-the-decoder-3b86f66b0e5f
+
 Dissecting BERT Part 2: BERT Specifics  http://mc.ai/dissecting-bert-part-2-bert-specifics/
 
 # myPytorch
