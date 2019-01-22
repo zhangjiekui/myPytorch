@@ -1,3 +1,6 @@
+#https://forums.fast.ai/t/nlp-transfer-learning-multi-label/35007
+
+
 cd /data/fastaiV1/fastaiClassV3/
 
 jupyter notebook --no-browser --port=8889
